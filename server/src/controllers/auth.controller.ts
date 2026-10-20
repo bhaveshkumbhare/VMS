@@ -4,6 +4,7 @@ import {User} from '../models/User';
 import {registerSchema} from "../validators/auth";
 import jwt from 'jsonwebtoken';
 import {loginSchema} from '../validators/auth'
+import {AuthRequest} from '../middlewares/auth'
 
 export async function register(req:Request,res:Response){
     const parsed = registerSchema.safeParse(req.body);
@@ -55,4 +56,11 @@ export async function login(req:Request,res:Response){
     res.json({
         accessToken,user:{id:user._id,name:user.name,email:user.email,role:user.role}
     })
+}
+
+export async function me(req:AuthRequest,res:Response){
+    const user = await User.findById(req.user!.id);
+    if(!user)return res.status(404).json({message:"User not found"})
+    
+        res.json({id:user._id,name:user.name,email:user.email,role:user.email})
 }
