@@ -1,6 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
+import "./models/User"
+import "./models/Business"
+import authRoutes from './routes/auth.routes'
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -10,6 +13,8 @@ app.use(express.json());
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
+
+app.use("/api/auth",authRoutes)
 
 async function start() {
   const uri = process.env.MONGODB_URI;
@@ -22,6 +27,7 @@ async function start() {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
+
 
 start().catch((err) => {
   console.error(err);
