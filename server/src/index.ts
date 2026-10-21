@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import "./models/User"
 import "./models/Business"
 import authRoutes from './routes/auth.routes'
+import businessRoutes from "./routes/business.routes";
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +17,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/auth",authRoutes)
+app.use("/api/business", businessRoutes);
 
 async function start() {
   const uri = process.env.MONGODB_URI;
